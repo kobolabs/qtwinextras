@@ -47,8 +47,6 @@
 #ifndef __ITaskbarList_INTERFACE_DEFINED__
 #define __ITaskbarList_INTERFACE_DEFINED__
 
-extern const GUID IID_ITaskbarList;
-
 struct ITaskbarList : IUnknown
 {
     virtual HRESULT STDMETHODCALLTYPE HrInit() = 0;
@@ -63,8 +61,6 @@ struct ITaskbarList : IUnknown
 #ifndef __ITaskbarList2_INTERFACE_DEFINED__
 #define __ITaskbarList2_INTERFACE_DEFINED__
 
-extern const GUID IID_ITaskbarList2;
-
 struct ITaskbarList2 : ITaskbarList
 {
     virtual HRESULT STDMETHODCALLTYPE MarkFullscreenWindow(HWND hwnd, BOOL fullscreen) = 0;
@@ -74,8 +70,6 @@ struct ITaskbarList2 : ITaskbarList
 
 #ifndef __ITaskbarList3_INTERFACE_DEFINED__
 #define __ITaskbarList3_INTERFACE_DEFINED__
-
-extern const GUID IID_ITaskbarList3;
 
 enum THUMBBUTTONMASK {
     THB_BITMAP    = 0x00000001,
@@ -140,8 +134,6 @@ struct ITaskbarList3 : ITaskbarList2
 #ifndef __ITaskbarList4_INTERFACE_DEFINED__
 #define __ITaskbarList4_INTERFACE_DEFINED__
 
-extern const GUID IID_ITaskbarList4;
-
 struct ITaskbarList4 : ITaskbarList3
 {
     virtual HRESULT STDMETHODCALLTYPE SetTabProperties(HWND tab, STPFLAG flags) = 0;
@@ -151,9 +143,6 @@ struct ITaskbarList4 : ITaskbarList3
 
 #ifndef __IObjectArray_INTERFACE_DEFINED__
 #define __IObjectArray_INTERFACE_DEFINED__
-
-extern const GUID CLSID_EnumerableObjectCollection;
-extern const GUID IID_IObjectArray;
 
 struct IObjectArray : IUnknown
 {
@@ -166,8 +155,6 @@ public:
 
 #ifndef __IObjectCollection_INTERFACE_DEFINED__
 #define __IObjectCollection_INTERFACE_DEFINED__
-
-extern const GUID IID_IObjectCollection;
 
 struct IObjectCollection : IObjectArray
 {
@@ -187,9 +174,6 @@ enum KNOWNDESTCATEGORY {
     KDC_FREQUENT = 1,
     KDC_RECENT
 };
-
-extern const GUID IID_ICustomDestinationList;
-extern const GUID CLSID_DestinationList;
 
 struct ICustomDestinationList : IUnknown
 {
@@ -215,9 +199,6 @@ enum APPDOCLISTTYPE {
     ADLT_FREQUENT
 };
 
-extern const GUID IID_IApplicationDocumentLists;
-extern const GUID CLSID_ApplicationDocumentLists;
-
 struct IApplicationDocumentLists : public IUnknown
 {
 public:
@@ -228,9 +209,6 @@ public:
 
 #ifndef __IApplicationDestinations_INTERFACE_DEFINED__
 #define __IApplicationDestinations_INTERFACE_DEFINED__
-
-extern const GUID IID_IApplicationDestinations;
-extern const GUID CLSID_ApplicationDestinations;
 
 struct IApplicationDestinations : public IUnknown
 {
@@ -244,6 +222,8 @@ public:
 
 #if (defined _MSC_VER && _MSC_VER < 1600) || defined(Q_CC_MINGW)
 
+#   if !defined(__MINGW64_VERSION_MAJOR) || !defined(__MINGW64_VERSION_MINOR) || __MINGW64_VERSION_MAJOR * 100 + __MINGW64_VERSION_MINOR < 301
+
 typedef struct SHARDAPPIDINFOLINK
 {
     IShellLink *psl;        // An IShellLink instance that when launched opens a recently used item in the specified
@@ -251,6 +231,8 @@ typedef struct SHARDAPPIDINFOLINK
                             // specified application's destination list.
     PCWSTR pszAppID;        // The id of the application that should be associated with this recent doc.
 } SHARDAPPIDINFOLINK;
+
+#   endif // !defined(__MINGW64_VERSION_MAJOR) || !defined(__MINGW64_VERSION_MINOR) || __MINGW64_VERSION_MAJOR * 100 + __MINGW64_VERSION_MINOR < 301
 
 #endif
 

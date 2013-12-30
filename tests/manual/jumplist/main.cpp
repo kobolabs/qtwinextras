@@ -1,10 +1,9 @@
 /****************************************************************************
  **
  ** Copyright (C) 2013 Ivan Vizir <define-true-false@yandex.com>
- ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
  ** Contact: http://www.qt-project.org/legal
  **
- ** This file is part of the QtWinExtras module of the Qt Toolkit.
+ ** This file is part of the test suite of the Qt Toolkit.
  **
  ** $QT_BEGIN_LICENSE:LGPL$
  ** Commercial License Usage
@@ -40,35 +39,45 @@
  **
  ****************************************************************************/
 
-#ifndef QQUICKWIN_P_H
-#define QQUICKWIN_P_H
+#include "testwidget.h"
 
-#include <QObject>
-#include <QtWin>
+#include <QApplication>
+#include <QSettings>
+#include <QDir>
 
-QT_BEGIN_NAMESPACE
-
-class QQuickWin : public QObject
+void associateFileType()
 {
-    Q_OBJECT
-    Q_ENUMS(HBitmapFormat WindowFlip3DPolicy)
+    QString exeFileName = QCoreApplication::applicationFilePath();
+    exeFileName = exeFileName.right(exeFileName.length() - exeFileName.lastIndexOf("/") - 1);
+    QString appName = "QtWinExtras JumpList Test";
 
-public:
-    enum HBitmapFormat
-    {
-        HBitmapNoAlpha = QtWin::HBitmapNoAlpha,
-        HBitmapPremultipliedAlpha = QtWin::HBitmapPremultipliedAlpha,
-        HBitmapAlpha = QtWin::HBitmapAlpha
-    };
+    QSettings regApplications("HKEY_CURRENT_USER\\Software\\Classes\\Applications\\" + exeFileName, QSettings::NativeFormat);
+    regApplications.setValue("FriendlyAppName", appName);
 
-    enum WindowFlip3DPolicy
-    {
-        FlipDefault = QtWin::FlipDefault,
-        FlipExcludeBelow = QtWin::FlipExcludeBelow,
-        FlipExcludeAbove = QtWin::FlipExcludeAbove
-    };
-};
+    regApplications.beginGroup("SupportedTypes");
+    regApplications.setValue(".txt", QString());
+    regApplications.endGroup();
 
-QT_END_NAMESPACE
+    regApplications.beginGroup("shell");
+    regApplications.beginGroup("open");
+    regApplications.setValue("FriendlyAppName", appName);
+    regApplications.beginGroup("command");
+    regApplications.setValue(".", '"' + QDir::toNativeSeparators(QCoreApplication::applicationFilePath()) + "\" \"%1\"");
+    regApplications.endGroup();
+    regApplications.endGroup();
+    regApplications.endGroup();
+}
 
-#endif // QQUICKWIN_P_H
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+    associateFileType();
+
+    TestWidget w;
+    if (QCoreApplication::arguments().contains("-fullscreen"))
+        w.showFullScreen();
+    else
+        w.show();
+
+    return a.exec();
+}

@@ -43,7 +43,7 @@
 #define QWINFUNCTIONS_H
 
 #if 0
-#pragma qt_class(QWinFunctions)
+#pragma qt_class(QtWin)
 #endif
 
 #include <QtCore/qobject.h>
@@ -198,7 +198,7 @@ namespace QtWin
     inline void disableBlurBehindWindow(QWidget *window)
     {
         if (window->windowHandle())
-            enableBlurBehindWindow(window->windowHandle());
+            disableBlurBehindWindow(window->windowHandle());
     }
 
     inline void markFullscreenWindow(QWidget *window, bool fullscreen = true)

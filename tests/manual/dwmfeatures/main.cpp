@@ -1,10 +1,9 @@
 /****************************************************************************
  **
  ** Copyright (C) 2013 Ivan Vizir <define-true-false@yandex.com>
- ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
  ** Contact: http://www.qt-project.org/legal
  **
- ** This file is part of the QtWinExtras module of the Qt Toolkit.
+ ** This file is part of the test suite of the Qt Toolkit.
  **
  ** $QT_BEGIN_LICENSE:LGPL$
  ** Commercial License Usage
@@ -40,35 +39,14 @@
  **
  ****************************************************************************/
 
-#ifndef QQUICKWIN_P_H
-#define QQUICKWIN_P_H
+#include "testwidget.h"
+#include <QApplication>
 
-#include <QObject>
-#include <QtWin>
-
-QT_BEGIN_NAMESPACE
-
-class QQuickWin : public QObject
+int main(int argc, char *argv[])
 {
-    Q_OBJECT
-    Q_ENUMS(HBitmapFormat WindowFlip3DPolicy)
+    QApplication a(argc, argv);
+    TestWidget w;
+    w.show();
 
-public:
-    enum HBitmapFormat
-    {
-        HBitmapNoAlpha = QtWin::HBitmapNoAlpha,
-        HBitmapPremultipliedAlpha = QtWin::HBitmapPremultipliedAlpha,
-        HBitmapAlpha = QtWin::HBitmapAlpha
-    };
-
-    enum WindowFlip3DPolicy
-    {
-        FlipDefault = QtWin::FlipDefault,
-        FlipExcludeBelow = QtWin::FlipExcludeBelow,
-        FlipExcludeAbove = QtWin::FlipExcludeAbove
-    };
-};
-
-QT_END_NAMESPACE
-
-#endif // QQUICKWIN_P_H
+    return a.exec();
+}

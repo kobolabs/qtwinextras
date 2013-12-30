@@ -1,10 +1,9 @@
 /****************************************************************************
  **
  ** Copyright (C) 2013 Ivan Vizir <define-true-false@yandex.com>
- ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
  ** Contact: http://www.qt-project.org/legal
  **
- ** This file is part of the QtWinExtras module of the Qt Toolkit.
+ ** This file is part of the test suite of the Qt Toolkit.
  **
  ** $QT_BEGIN_LICENSE:LGPL$
  ** Commercial License Usage
@@ -40,35 +39,42 @@
  **
  ****************************************************************************/
 
-#ifndef QQUICKWIN_P_H
-#define QQUICKWIN_P_H
+#ifndef TESTWIDGET_H
+#define TESTWIDGET_H
 
-#include <QObject>
-#include <QtWin>
+#include <QWidget>
 
 QT_BEGIN_NAMESPACE
-
-class QQuickWin : public QObject
-{
-    Q_OBJECT
-    Q_ENUMS(HBitmapFormat WindowFlip3DPolicy)
-
-public:
-    enum HBitmapFormat
-    {
-        HBitmapNoAlpha = QtWin::HBitmapNoAlpha,
-        HBitmapPremultipliedAlpha = QtWin::HBitmapPremultipliedAlpha,
-        HBitmapAlpha = QtWin::HBitmapAlpha
-    };
-
-    enum WindowFlip3DPolicy
-    {
-        FlipDefault = QtWin::FlipDefault,
-        FlipExcludeBelow = QtWin::FlipExcludeBelow,
-        FlipExcludeAbove = QtWin::FlipExcludeAbove
-    };
-};
-
+namespace Ui {
+class TestWidget;
+}
 QT_END_NAMESPACE
 
-#endif // QQUICKWIN_P_H
+#if defined(QT_NAMESPACE)
+namespace Ui = QT_NAMESPACE::Ui;
+#endif
+
+class TestWidget : public QWidget
+{
+    Q_OBJECT
+
+public:
+    explicit TestWidget(QWidget *parent = 0);
+    ~TestWidget();
+
+protected:
+    void changeEvent(QEvent *e);
+    bool event(QEvent *);
+
+private:
+    Ui::TestWidget *ui;
+
+private slots:
+    void onDisallowPeekClicked();
+    void onExcludeFromPeekClicked();
+    void onFlip3DPolicyChanged();
+    void onGlassMarginsChanged();
+    void onResetGlassFrameClicked();
+};
+
+#endif // TESTWIDGET_H
